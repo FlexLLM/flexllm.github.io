@@ -242,25 +242,25 @@
             <span class="author-block">
               <a href="https://www.gabrieleoliaro.com/">Gabriele Oliaro<sup>1</sup></a></span>
               <span class="author-block", style="padding-left:30px">
-                <a href="https://www.cs.cmu.edu/~xmiao/">Xupeng Miao<sup>1,2</sup></a></span>
+                <a href="https://hsword.github.io/">Xupeng Miao<sup>1,2</sup></a></span>
                 <span class="author-block", style="padding-left:30px">
-                  <a href="#">Xinhao Cheng<sup>1</sup></a></span>
+                  <a href="https://xinhaoc.github.io/">Xinhao Cheng<sup>1</sup></a></span>
                   <span class="author-block", style="padding-left:30px">
-                    <a href="#">Vineeth Kada<sup>3</sup></a></span>
+                    <a href="https://www.linkedin.com/in/vineeth-kada/">Vineeth Kada<sup>3</sup></a></span>
           </div>
 
           <div class="is-size-5 publication-authors">
-            <span class="author-block">Mengdi Wu<sup>1</sup></span>
-            <span class="author-block", style="padding-left:30px">Ruohan Gao<sup>1</sup></span>
-            <span class="author-block", style="padding-left:30px">Yingyi Huang<sup>1</sup></span>
-            <span class="author-block", style="padding-left:30px">Remi Delacourt<sup>4</sup></span>
+            <span class="author-block"><a href="https://wmdi.github.io/">Mengdi Wu<sup>1</sup></a></span>
+            <span class="author-block", style="padding-left:30px"><a href="https://www.linkedin.com/in/ruohan-chloe-gao-b0a675286/">Ruohan Gao<sup>1</sup></a></span>
+            <span class="author-block", style="padding-left:30px"><a href="https://www.linkedin.com/in/avyh/">Yingyi Huang<sup>1</sup></a></span>
+            <span class="author-block", style="padding-left:30px"><a href="https://www.linkedin.com/in/remi-delacourt/">Remi Delacourt<sup>4</sup></a></span>
           </div>
 
           <div class="is-size-5 publication-authors">
-            <span class="author-block">April Yang<sup>1</sup></span>
-            <span class="author-block", style="padding-left:30px">Yingcheng Wang<sup>2</sup></span>
-            <span class="author-block", style="padding-left:30px">Colin Unger<sup>5</sup></span>
-            <span class="author-block", style="padding-left:30px">Zhihao Jia<sup>1</sup></span>
+            <span class="author-block"><a href="https://www.linkedin.com/in/yutongayang/">April Yang<sup>1</sup></a></span>
+            <span class="author-block", style="padding-left:30px">Yingcheng Wang<sup>2</sup></a></span>
+            <span class="author-block", style="padding-left:30px"><a href="https://www.lockshaw.net/">Colin Unger<sup>5</sup></a></span>
+            <span class="author-block", style="padding-left:30px"><a href="https://cs.cmu.edu/~zhihaoj2/">Zhihao Jia<sup>1</sup></a></span>
           </div>
 
           <div class="is-size-5 publication-authors">
@@ -284,21 +284,12 @@
                 </a>
               </span>
               <span class="link-block">
-                <a href="https://github.com/flexflow/FlexFlow"
+                <a href="https://github.com/FlexLLM/artifact"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                       <i class="fab fa-github"></i>
                   </span>
                   <span>Code</span>
-                  </a>
-              </span>
-              <span class="link-block">
-                <a href="https://flexflow.readthedocs.io/"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                      <i class="fas fa-book"></i>
-                  </span>
-                  <span>Documentation</span>
                   </a>
               </span>
 
@@ -339,7 +330,7 @@
             FlexLLM's static compilation optimizations—<b>dependent parallelization</b> and <b>graph pruning</b>—significantly shrink activation memory, leading to end-to-end GPU memory savings by up to <b>80%</b>. At runtime, a novel <b>token-level finetuning</b> mechanism paired with a hybrid token scheduler dynamically interleaves inference and training tokens within each co-serving iteration, meeting strict latency SLOs while maximizing utilization.
           </p>
           <p>
-            In end-to-end benchmarks on LLaMA-3.1-8B, Qwen-2.5-14B, and Qwen-2.5-32B, FlexLLM sustains the inference SLO requirements up to 20 req/s, and improves finetuning throughput by <b>1.9-4.8×</b> under heavy inference workloads and <b>2.5-6.8×</b> under light loads, preserving over <b>76%</b> of peak finetuning progress even at peak demand.
+            In end-to-end benchmarks on LLaMA-3.1-8B, Qwen-2.5-14B, and Qwen-2.5-32B, FlexLLM maintains inference SLO compliance at up to 20 req/s, and improves finetuning throughput by <b>1.9-4.8×</b> under heavy inference workloads and <b>2.5-6.8×</b> under light loads, preserving over <b>76%</b> of peak finetuning progress even at peak demand.
           </p>
         </div>
       </div>
@@ -362,7 +353,7 @@
         FlexLLM introduces <b>co-serving</b>, a novel multiplexing technique that effectively handles bursty workloads while satisfying strict SLOs. The key insight is that inference and finetuning tasks, when using the same base LLMs, can be merged at fine granularity—at the level of individual tokens rather than entire requests or kernels.
       </p>
       <p>
-        The system provides a <b>PEFT-as-a-Service (PaaS) interface</b> that unifies inference and finetuning tasks, enabling their joint execution on shared GPU resources. FlexLLM represents a PEFT model as a sequence of bypass networks attached to the backbone LLM, where each bypass network takes a single tensor from the backbone LLM as input and produces a single output tensor that is added to one tensor of the backbone LLM.
+        The system provides a <b>PEFT-as-a-Service (PaaS) interface</b> that unifies inference and finetuning tasks, enabling their joint execution on shared GPU resources. FlexLLM represents a PEFT model as a sequence of bypass networks attached to the backbone LLM, where each bypass network takes a single tensor from the backbone LLM as input and produces a single output tensor that is added to one tensor of the backbone LLM. All existing PEFT methods can be represented in this format, enabling FlexLLM to fuse computation graphs of different PEFT models.
       </p>
     </div>
   </div>
@@ -447,7 +438,7 @@
           <b>Ablation study</b> of FlexLLM's memory optimizations showing activation memory requirements for different finetuning methods on a 70B LLM with sequence length 1024. FlexLLM saves <b>85%-87%</b> memory requirements for activations compared to existing approaches.
         </p>
         <p>
-          The major improvement comes from <b>graph pruning</b>, which alone achieves 71%-74% activation memory overhead reduction. <b>Rematerialization</b> and <b>token-level finetuning</b> further reduce memory overhead by 0%-8% and 4%-10%, respectively. These optimizations enable FlexLLM to retain sufficient memory for inference requests' KV cache, ensuring eviction rates of 0% in most cases.
+          The major improvement comes from <b>graph pruning</b>, which alone achieves 71%-74% activation memory overhead reduction. <b>Rematerialization</b> and <b>token-level finetuning</b> further reduce memory overhead by 0%-8% and 4%-10%, respectively. These optimizations enable FlexLLM to retain sufficient memory for inference requests' KV cache, ensuring eviction rates of 0% in most cases and peaking at only 1.2% for the largest model (Qwen2.5-32B) under the heaviest loads.
         </p>
       </div>
     </div>
@@ -476,149 +467,6 @@
 
 <hr>
 
-<section class="section">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">Getting Started</h2>
-      </div>
-    </div>
-
-    <div class="columns is-centered">
-      <div class="column is-four-fifths">
-        <div class="content has-text-justified">
-
-          <details style="margin-bottom: 1.5rem; border: 1px solid #dbdbdb; border-radius: 6px; padding: 1rem;">
-            <summary style="cursor: pointer; font-weight: 600; font-size: 1.15rem; user-select: none;">
-              <i class="fas fa-chevron-right" style="transition: transform 0.2s; margin-right: 0.5rem;"></i>
-              What is co-serving and how does it differ from existing approaches?
-            </summary>
-            <div style="margin-top: 1rem; padding-left: 1.5rem;">
-              <p>
-                <b>Co-serving</b> is FlexLLM's novel multiplexing technique that enables simultaneous execution of LLM inference and PEFT-based finetuning on shared GPUs. Unlike existing approaches that use separate clusters for inference and finetuning, co-serving fuses computation at the token level.
-              </p>
-              <p>
-                Key advantages of co-serving:
-              </p>
-              <ul>
-                <li><b>Token-level scheduling:</b> Millisecond-scale resource reallocation in response to inference bursts</li>
-                <li><b>No context switching:</b> Instant throttling of finetuning tokens within the same GPU kernel</li>
-                <li><b>Opportunistic utilization:</b> Finetuning tasks consume idle capacity during normal operation</li>
-                <li><b>Shared base parameters:</b> Minimal memory overhead since base LLM parameters are frozen</li>
-              </ul>
-            </div>
-          </details>
-
-          <details style="margin-bottom: 1.5rem; border: 1px solid #dbdbdb; border-radius: 6px; padding: 1rem;">
-            <summary style="cursor: pointer; font-weight: 600; font-size: 1.15rem; user-select: none;">
-              <i class="fas fa-chevron-right" style="transition: transform 0.2s; margin-right: 0.5rem;"></i>
-              How much memory does FlexLLM save compared to existing systems?
-            </summary>
-            <div style="margin-top: 1rem; padding-left: 1.5rem;">
-              <p>
-                FlexLLM achieves significant memory savings through its static compilation optimizations:
-              </p>
-              <ul>
-                <li><b>Overall activation memory:</b> 85%-87% reduction compared to existing approaches</li>
-                <li><b>Graph pruning alone:</b> 71%-74% activation memory overhead reduction</li>
-                <li><b>Rematerialization:</b> Additional 0%-8% memory savings</li>
-                <li><b>Token-level finetuning:</b> Additional 4%-10% memory savings</li>
-              </ul>
-              <p>
-                These optimizations enable FlexLLM to retain sufficient memory for inference requests' KV cache, ensuring eviction rates of 0% in most cases and peaking at only 1.2% for the largest model (Qwen2.5-32B) under the heaviest loads.
-              </p>
-            </div>
-          </details>
-
-          <details style="margin-bottom: 1.5rem; border: 1px solid #dbdbdb; border-radius: 6px; padding: 1rem;">
-            <summary style="cursor: pointer; font-weight: 600; font-size: 1.15rem; user-select: none;">
-              <i class="fas fa-chevron-right" style="transition: transform 0.2s; margin-right: 0.5rem;"></i>
-              What performance improvements does FlexLLM achieve?
-            </summary>
-            <div style="margin-top: 1rem; padding-left: 1.5rem;">
-              <p>
-                FlexLLM demonstrates substantial performance improvements across different workload conditions:
-              </p>
-              <ul>
-                <li><b>Heavy inference loads (20 req/s):</b> 1.9×-4.8× finetuning throughput improvement</li>
-                <li><b>Light inference loads (4.0 req/s):</b> 2.5×-6.8× finetuning throughput improvement</li>
-                <li><b>SLO attainment:</b> Maintains ≥90% inference SLO attainment even at 20 req/s</li>
-                <li><b>Finetuning progress:</b> Preserves over 76% of peak finetuning progress even at peak demand</li>
-              </ul>
-              <p>
-                These improvements are achieved while maintaining strict latency SLOs for inference requests, making FlexLLM suitable for production environments with bursty workloads.
-              </p>
-            </div>
-          </details>
-
-          <details style="margin-bottom: 1.5rem; border: 1px solid #dbdbdb; border-radius: 6px; padding: 1rem;">
-            <summary style="cursor: pointer; font-weight: 600; font-size: 1.15rem; user-select: none;">
-              <i class="fas fa-chevron-right" style="transition: transform 0.2s; margin-right: 0.5rem;"></i>
-              What PEFT methods does FlexLLM support?
-            </summary>
-            <div style="margin-top: 1rem; padding-left: 1.5rem;">
-              <p>
-                FlexLLM supports all existing PEFT methods through its unified bypass network representation:
-              </p>
-              <ul>
-                <li><b>LoRA (Low-Rank Adaptation):</b> Adds trainable low-rank matrices to frozen layers</li>
-                <li><b>IA³ (Infused Adapter by Inhibiting and Amplifying Inner Activations):</b> Elementwise multiplication operators</li>
-                <li><b>Adapters:</b> Small neural networks inserted between layers</li>
-                <li><b>Custom PEFT methods:</b> Any method that can be represented as bypass networks</li>
-              </ul>
-              <p>
-                The bypass network format enables FlexLLM to fuse computation graphs of different PEFT models, allowing efficient co-serving of multiple fine-tuned variants of the same base model.
-              </p>
-            </div>
-          </details>
-
-          <details style="margin-bottom: 1.5rem; border: 1px solid #dbdbdb; border-radius: 6px; padding: 1rem;">
-            <summary style="cursor: pointer; font-weight: 600; font-size: 1.15rem; user-select: none;">
-              <i class="fas fa-chevron-right" style="transition: transform 0.2s; margin-right: 0.5rem;"></i>
-              How does FlexLLM handle bursty inference workloads?
-            </summary>
-            <div style="margin-top: 1rem; padding-left: 1.5rem;">
-              <p>
-                FlexLLM's token-level scheduling enables dynamic adaptation to bursty workloads:
-              </p>
-              <ul>
-                <li><b>Instant response:</b> Can throttle finetuning tokens within the same GPU kernel execution</li>
-                <li><b>No context switching:</b> Avoids overhead of switching between inference and finetuning tasks</li>
-                <li><b>Automatic detection:</b> Monitors workload fluctuations and adjusts token ratios in real-time</li>
-                <li><b>SLO preservation:</b> Maintains strict latency guarantees even during inference bursts</li>
-              </ul>
-              <p>
-                In case studies with BurstGPT traces, FlexLLM automatically increased inference throughput from hundreds to 2.25K tokens/s during peak demand while maintaining finetuning progress.
-              </p>
-            </div>
-          </details>
-
-          <details style="margin-bottom: 1.5rem; border: 1px solid #dbdbdb; border-radius: 6px; padding: 1rem;">
-            <summary style="cursor: pointer; font-weight: 600; font-size: 1.15rem; user-select: none;">
-              <i class="fas fa-chevron-right" style="transition: transform 0.2s; margin-right: 0.5rem;"></i>
-              Is FlexLLM compatible with existing LLM serving systems?
-            </summary>
-            <div style="margin-top: 1rem; padding-left: 1.5rem;">
-              <p>
-                FlexLLM provides compatibility with existing systems while offering significant advantages:
-              </p>
-              <ul>
-                <li><b>Model compatibility:</b> Supports LLaMA, Qwen, and other transformer-based models from HuggingFace</li>
-                <li><b>PEFT integration:</b> Works with existing LoRA and other PEFT implementations</li>
-                <li><b>API compatibility:</b> Provides PEFT-as-a-Service interface for easy integration</li>
-                <li><b>Performance comparison:</b> Evaluated against vLLM (inference) and LlamaFactory (finetuning)</li>
-              </ul>
-              <p>
-                FlexLLM can be deployed alongside existing systems or as a replacement, offering better resource utilization and performance for workloads that require both inference and finetuning capabilities.
-              </p>
-            </div>
-          </details>
-
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <hr>
 
