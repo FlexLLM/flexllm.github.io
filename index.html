@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Primary Meta Tags -->
+  <title>FlexLLM: Token-Level Co-Serving of LLM Inference and Finetuning with SLO Guarantees | NSDI 2026</title>
+  <meta name="title" content="FlexLLM: Token-Level Co-Serving of LLM Inference and Finetuning with SLO Guarantees | NSDI 2026">
+  <meta name="description" content="FlexLLM is the first system to co-serve LLM inference and PEFT-based finetuning on shared GPUs through token-level computation fusion. Achieves 1.9-4.8× finetuning throughput improvements while maintaining strict latency SLOs.">
+  <meta name="keywords" content="FlexLLM, large language model, LLM serving, inference system, finetuning, PEFT, co-serving, token-level scheduling, memory optimization, SLO guarantees, NSDI 2026, machine learning, deep learning, natural language processing, NLP, LLM optimization">
+  <meta name="author" content="Gabriele Oliaro, Xupeng Miao, Xinhao Cheng, Vineeth Kada, Mengdi Wu, Ruohan Gao, Yingyi Huang, Remi Delacourt, April Yang, Yingcheng Wang, Colin Unger, Zhihao Jia">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://flexllm.github.io/">
+  <meta property="og:title" content="FlexLLM: Token-Level Co-Serving of LLM Inference and Finetuning with SLO Guarantees">
+  <meta property="og:description" content="FlexLLM is the first system to co-serve LLM inference and PEFT-based finetuning on shared GPUs through token-level computation fusion. Achieves 1.9-4.8× finetuning throughput improvements while maintaining strict latency SLOs.">
+  <meta property="og:image" content="https://flexllm.github.io/images/flexllm-overview-hq.png">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://flexllm.github.io/">
+  <meta property="twitter:title" content="FlexLLM: Token-Level Co-Serving of LLM Inference and Finetuning with SLO Guarantees">
+  <meta property="twitter:description" content="FlexLLM is the first system to co-serve LLM inference and PEFT-based finetuning on shared GPUs through token-level computation fusion. Achieves 1.9-4.8× finetuning throughput improvements while maintaining strict latency SLOs.">
+  <meta property="twitter:image" content="https://flexllm.github.io/images/flexllm-overview-hq.png">
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://flexllm.github.io/">
+  
+  <!-- Additional SEO -->
+  <meta name="citation_title" content="FlexLLM: Token-Level Co-Serving of LLM Inference and Finetuning with SLO Guarantees">
+  <meta name="citation_author" content="Oliaro, Gabriele">
+  <meta name="citation_author" content="Miao, Xupeng">
+  <meta name="citation_author" content="Cheng, Xinhao">
+  <meta name="citation_author" content="Kada, Vineeth">
+  <meta name="citation_author" content="Wu, Mengdi">
+  <meta name="citation_author" content="Gao, Ruohan">
+  <meta name="citation_author" content="Huang, Yingyi">
+  <meta name="citation_author" content="Delacourt, Remi">
+  <meta name="citation_author" content="Yang, April">
+  <meta name="citation_author" content="Wang, Yingcheng">
+  <meta name="citation_author" content="Unger, Colin">
+  <meta name="citation_author" content="Jia, Zhihao">
+  <meta name="citation_publication_date" content="2026">
+  <meta name="citation_conference_title" content="The 23rd USENIX Symposium on Networked Systems Design and Implementation">
+  <meta name="citation_pdf_url" content="https://arxiv.org/abs/2402.18789">
+  <meta name="citation_arxiv_id" content="arXiv:2402.18789">
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro|Lato:wght@300;400;700;900"
+        rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Texta:wght@400;700;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <style>
+    :root {
+      /* Light mode colors */
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8f9fa;
+      --text-primary: #333333;
+      --text-secondary: #666666;
+      --text-muted: #888888;
+      --border-color: #e1e5e9;
+      --shadow: rgba(0, 0, 0, 0.1);
+      --accent-color: #2563eb;
+      --accent-hover: #1d4ed8;
+    }
+
+    [data-theme="dark"] {
+      /* Dark mode colors */
+      --bg-primary: #1a1a1a;
+      --bg-secondary: #2d2d2d;
+      --text-primary: #ffffff;
+      --text-secondary: #cccccc;
+      --text-muted: #999999;
+      --border-color: #404040;
+      --shadow: rgba(0, 0, 0, 0.3);
+      --accent-color: #3b82f6;
+      --accent-hover: #2563eb;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .hero {
+      background-color: var(--bg-primary);
+    }
+
+    .section {
+      background-color: var(--bg-primary);
+    }
+
+    .footer {
+      background-color: var(--bg-secondary);
+    }
+
+    details {
+      background-color: var(--bg-secondary);
+      border-color: var(--border-color);
+    }
+
+    details > summary {
+      list-style: none;
+      color: var(--text-primary);
+    }
+    details > summary::-webkit-details-marker {
+      display: none;
+    }
+    
+    .content {
+      color: var(--text-primary);
+    }
+
+    /* Make titles visible in dark mode */
+    [data-theme="dark"] .title,
+    [data-theme="dark"] h1,
+    [data-theme="dark"] h2,
+    [data-theme="dark"] h3,
+    [data-theme="dark"] h4,
+    [data-theme="dark"] h5,
+    [data-theme="dark"] h6 {
+      color: var(--text-primary) !important;
+    }
+
+    /* Institution logos */
+    .institution-logo {
+      height: 0.9em;
+      vertical-align: middle;
+      margin: 0 2px;
+      display: inline-block;
+    }
+
+    /* Theme toggle button */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--accent-color);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      z-index: 1000;
+      box-shadow: 0 2px 10px var(--shadow);
+    }
+
+    .theme-toggle:hover {
+      background: var(--accent-hover);
+      transform: scale(1.1);
+    }
+  </style>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+  <!-- Theme Toggle Button -->
+  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+    <i class="fas fa-moon" id="theme-icon"></i>
+  </button>
+
+<section class="hero" style="margin-bottom: 0px;">
+  <div class="hero-body">
+    <div class="container is-max-widescreen">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-2 publication-title" style="margin-bottom: 10px;">FlexLLM: Token-Level Co-Serving of LLM Inference <br>and Finetuning with SLO Guarantees</h1>
+          <div class="is-size-4" style="margin-top: 10px; margin-bottom: 20px;">
+            <span style="color: #888888; font-weight: 400;">
+              NSDI 2026 🚀
+            </span>
+          </div>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://www.gabrieleoliaro.com/">Gabriele Oliaro<sup>*</sup></a> <img src="./images/cmu.png" alt="CMU" class="institution-logo"></span>
+              <span class="author-block", style="padding-left:30px">
+                <a href="https://hsword.github.io/">Xupeng Miao<sup>*†</sup></a> <img src="./images/purdue.png" alt="Purdue" class="institution-logo"></span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://xinhaoc.github.io/">Xinhao Cheng</a> <img src="./images/cmu.png" alt="CMU" class="institution-logo"></span>
+            <span class="author-block", style="padding-left:30px">
+              <a href="https://www.linkedin.com/in/vineeth-kada/">Vineeth Kada<sup>†</sup></a> <img src="./images/anthropic.png" alt="Anthropic" class="institution-logo"></span>
+            <span class="author-block", style="padding-left:30px">
+              <a href="https://wmdi.github.io/">Mengdi Wu</a> <img src="./images/cmu.png" alt="CMU" class="institution-logo"></span>
+            <span class="author-block", style="padding-left:30px">
+              <a href="https://www.linkedin.com/in/ruohan-chloe-gao-b0a675286/">Ruohan Gao</a> <img src="./images/cmu.png" alt="CMU" class="institution-logo"></span>
+            <span class="author-block", style="padding-left:30px">
+              <a href="https://www.linkedin.com/in/avyh/">Yingyi Huang</a> <img src="./images/cmu.png" alt="CMU" class="institution-logo"></span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://www.linkedin.com/in/remi-delacourt/">Remi Delacourt<sup>†</sup></a> <img src="./images/mistral.png" alt="Mistral" class="institution-logo"></span>
+            <span class="author-block", style="padding-left:30px">
+              <a href="https://www.linkedin.com/in/yutongayang/">April Yang</a> <img src="./images/cmu.png" alt="CMU" class="institution-logo"></span>
+            <span class="author-block", style="padding-left:30px">
+              Yingcheng Wang<sup>†</sup></a> <img src="./images/purdue.png" alt="Purdue" class="institution-logo"></span>
+            <span class="author-block", style="padding-left:30px">
+              <a href="https://www.lockshaw.net/">Colin Unger</a> <img src="./images/stanford.png" alt="Stanford" class="institution-logo"></span>
+            <span class="author-block", style="padding-left:30px">
+              <a href="https://cs.cmu.edu/~zhihaoj2/">Zhihao Jia</a> <img src="./images/cmu.png" alt="CMU" class="institution-logo"> <img src="./images/aws.png" alt="AWS" class="institution-logo"></span>
+          </div>
+
+          <div class="is-size-5 publication-authors" style="margin-top: 10px;">
+            <span class="author-block"><img src="./images/cmu.png" alt="CMU" class="institution-logo"> Carnegie Mellon University</span>
+            <span class="author-block", style="padding-left:30px"><img src="./images/purdue.png" alt="Purdue" class="institution-logo"> Purdue University</span>
+            <span class="author-block", style="padding-left:30px"><img src="./images/anthropic.png" alt="Anthropic" class="institution-logo"> Anthropic PBC</span>
+          </div>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><img src="./images/stanford.png" alt="Stanford" class="institution-logo"> Stanford University</span>
+            <span class="author-block", style="padding-left:30px"><img src="./images/mistral.png" alt="Mistral" class="institution-logo"> Mistral AI</span>
+            <span class="author-block", style="padding-left:30px"><img src="./images/aws.png" alt="AWS" class="institution-logo"> Amazon Web Services</span>
+          </div>
+
+          <div class="is-size-5 publication-authors" style="margin-top: 15px; font-style: italic;">
+            <span class="author-block"><sup>*</sup>Equal contribution</span>
+            <span class="author-block", style="padding-left:30px"><sup>†</sup>Work done at CMU</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2402.18789"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/FlexLLM/artifact"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+
+            </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <center><img src="./images/flexllm-overview-hq.png" alt="FlexLLM Overview" width="80%" style="max-width: 800px;"></center>
+      <div class="content has-text-justified">
+        <b>Overview of FlexLLM's co-serving architecture.</b> FlexLLM introduces token-level co-serving of LLM inference and PEFT-based finetuning on shared GPUs. The system uses static compilation optimizations (dependent parallelization and graph pruning) to reduce memory requirements by up to 80%, while a hybrid token scheduler dynamically interleaves inference and training tokens to maintain strict latency SLOs while maximizing GPU utilization.
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<hr>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Finetuning large language models (LLMs) is essential for task adaptation, yet today's serving stacks isolate inference and finetuning on separate GPU clusters—wasting resources and under-utilizing hardware. We introduce <b>FlexLLM</b>, the first system to <em>co-serve</em> LLM inference and PEFT-based finetuning on shared GPUs by fusing computation at the token level.
+          </p>
+          <p>
+            FlexLLM's static compilation optimizations—<b>dependent parallelization</b> and <b>graph pruning</b>—significantly shrink activation memory, leading to end-to-end GPU memory savings by up to <b>80%</b>. At runtime, a novel <b>token-level finetuning</b> mechanism paired with a hybrid token scheduler dynamically interleaves inference and training tokens within each co-serving iteration, meeting strict latency SLOs while maximizing utilization.
+          </p>
+          <p>
+            In end-to-end benchmarks on LLaMA-3.1-8B, Qwen-2.5-14B, and Qwen-2.5-32B, FlexLLM maintains inference SLO compliance at up to 20 req/s, and improves finetuning throughput by <b>1.9-4.8×</b> under heavy inference workloads and <b>2.5-6.8×</b> under light loads, preserving over <b>76%</b> of peak finetuning progress even at peak demand.
+          </p>
+        </div>
+      </div>
+    </div>
+
+</section>
+<hr>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+  <div class="columns is-centered has-text-centered">
+    <div class="column is-four-fifths">
+      <h2 class="title is-3">Method</h2>
+
+      <h2 class="title is-5">Co-Serving Architecture & PEFT-as-a-Service</h2>
+
+    <div class="content has-text-justified">
+      <p>
+        FlexLLM introduces <b>co-serving</b>, a novel multiplexing technique that effectively handles bursty workloads while satisfying strict SLOs. The key insight is that inference and finetuning tasks, when using the same base LLMs, can be merged at fine granularity—at the level of individual tokens rather than entire requests or kernels.
+      </p>
+      <p>
+        The system provides a <b>PEFT-as-a-Service (PaaS) interface</b> that unifies inference and finetuning tasks, enabling their joint execution on shared GPU resources. FlexLLM represents a PEFT model as a sequence of bypass networks attached to the backbone LLM, where each bypass network takes a single tensor from the backbone LLM as input and produces a single output tensor that is added to one tensor of the backbone LLM. All existing PEFT methods can be represented in this format, enabling FlexLLM to fuse computation graphs of different PEFT models.
+      </p>
+    </div>
+  </div>
+  </div>
+
+  <div class="columns is-centered has-text-centered">
+    <div class="column is-four-fifths">
+
+      <br>
+      <h2 class="title is-5">Static Compilation Optimizations</h2>
+
+      <center><img src="./images/parallelization-strategies.png" alt="Parallelization Strategies" width="80%"></center>
+
+      <div class="content has-text-justified">
+        <p>
+          <b>Dependent parallelization</b> enables efficient distributed execution of PEFT models by creating parallel computation graphs that specify execution over distributed environments. The system uses four possible parallel states for tensor dimensions: non-parallel, partitioned, replicated, and pre-reduce.
+        </p>
+        <p>
+          <b>Graph pruning</b> optimizes memory usage by removing unnecessary tensors and operations from the computation graph. This optimization, combined with rematerialization and token-level finetuning, achieves up to 80% reduction in activation memory requirements compared to existing approaches.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="columns is-centered has-text-centered">
+    <div class="column is-four-fifths">
+      <br>
+      <h2 class="title is-5">Token-Level Finetuning & Hybrid Scheduling</h2>
+
+      <center><img src="./images/token-scheduling.png" alt="Token Scheduling" width="80%"></center>
+
+      <div class="content has-text-justified">
+        <p>
+          <b>Token-level finetuning</b> enables millisecond-scale resource reallocation in response to inference bursts. When inference requests suddenly spike, FlexLLM can instantly throttle finetuning tokens within the same GPU kernel execution, reallocating resources to maintain inference SLOs without context switching overhead.
+        </p>
+        <p>
+          The <b>hybrid token scheduler</b> dynamically interleaves inference and training tokens within each co-serving iteration. During normal load, finetuning tasks opportunistically consume idle capacity reserved for bursts, improving overall utilization while maintaining strict latency guarantees for inference requests.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+
+<hr>
+
+<section class="section">
+  <div class="container is-max-desktop">
+  <div class="columns is-centered has-text-centered">
+    <div class="column is-four-fifths">
+      <h2 class="title is-3">Results</h2>
+
+      <h2 class="title is-5">End-to-End Performance Comparison</h2>
+
+    <center><img src="./images/end-to-end-results.png" alt="End-to-End Results" width="100%"></center>
+
+    <div class="content has-text-justified">
+      <p>
+        <b>Performance comparison</b> showing FlexLLM's co-serving approach compared to existing separate cluster approaches using vLLM for inference and LlamaFactory for finetuning. The separate approach uses different resource allocation strategies (25%-75% vLLM-LlamaFactory configurations).
+      </p>
+      <p>
+        Across all three models (LLaMA-3.1-8B, Qwen-2.5-14B, and Qwen-2.5-32B), FlexLLM matches the 75% vLLM - 25% LlamaFactory configuration in inference SLO attainment (at or above 90% even at 20 req/s) and inference throughput, while dramatically improving finetuning throughput.
+      </p>
+      <p>
+        Under heavy inference loads (20 req/s), FlexLLM sustains finetuning throughputs of <b>7.2K, 2.2K and 2.2K tokens/s</b> for the three models respectively, compared to only 3.8K, 1.0K, and 0.5K tokens/s in the separate setup—achieving <b>1.9×-4.8×</b> improvement. Under light inference loads (4.0 req/s), FlexLLM achieves <b>2.5×-6.8×</b> improvement over the separate approach.
+      </p>
+    </div>
+  </div>
+  </div>
+
+  <div class="columns is-centered has-text-centered">
+    <div class="column is-four-fifths">
+      <br>
+      <h2 class="title is-5">GPU Scheduling Comparison</h2>
+
+      <center><img src="./images/gpu-scheduling-comparison.png" alt="GPU Scheduling Comparison" width="100%"></center>
+
+      <div class="content has-text-justified">
+        <p>
+          <b>Comparison of co-serving with alternative GPU scheduling strategies:</b> temporal sharing and spatial sharing. Temporal sharing interleaves inference and finetuning tasks over time, while spatial sharing simultaneously launches both using separate CUDA resources.
+        </p>
+        <p>
+          For temporal sharing, interleaving one inference iteration with one finetuning iteration violates SLOs for nearly all requests, as inference iterations complete in tens of milliseconds while finetuning takes several seconds. While low inference frequency (64) maximizes finetuning throughput, it adversely impacts SLO attainment. A frequency of 128 matches co-serving's inference metrics but reduces finetuning throughput by 0.57×-0.86× compared to co-serving.
+        </p>
+        <p>
+          Dynamic temporal sharing adapts based on queue lengths and arrival rates, maintaining SLO attainment above 90% in most scenarios with inference throughputs of 5.4K, 4.9K, and 6.6K tokens/s under heavy loads. However, co-serving's finetuning throughput is still <b>1.0–1.7×</b> higher, and dynamic temporal sharing shows instability under the heaviest loads. Spatial sharing achieves comparable finetuning throughput but remains suboptimal in SLO attainment under heavy inference workloads due to interference between tasks.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="columns is-centered has-text-centered">
+    <div class="column is-four-fifths">
+      <br>
+      <h2 class="title is-5">Memory Optimization Effectiveness</h2>
+
+      <center><img src="./images/memory-optimization.png" alt="Memory Optimization" width="100%"></center>
+
+      <div class="content has-text-justified">
+        <p>
+          <b>Ablation study</b> of FlexLLM's memory optimizations showing activation memory requirements for different finetuning methods on a 70B LLM with sequence length 1024. FlexLLM saves <b>85%-87%</b> memory requirements for activations compared to existing approaches.
+        </p>
+        <p>
+          The major improvement comes from <b>graph pruning</b>, which alone achieves 71%-74% activation memory overhead reduction. <b>Rematerialization</b> and <b>token-level finetuning</b> further reduce memory overhead by 0%-8% and 4%-10%, respectively. These optimizations enable FlexLLM to retain sufficient memory for inference requests' KV cache, ensuring eviction rates of 0% in most cases and peaking at only 1.2% for the largest model (Qwen2.5-32B) under the heaviest loads.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="columns is-centered has-text-centered">
+    <div class="column is-four-fifths">
+      <br>
+      <h2 class="title is-5">Dynamic Workload Adaptation</h2>
+
+      <div class="content has-text-justified">
+        <p>
+          <b>Case study</b> demonstrating FlexLLM's ability to dynamically adapt to fluctuating inference workloads in real-time using a 10-minute interval of the BurstGPT trace with Qwen-2.5-14B model. Inference and finetuning requests are sampled from the ShareGPT and Sky-T1 datasets respectively.
+        </p>
+      </div>
+
+      <center><img src="./images/case-arrival.png" alt="Arrival Inference Requests" width="100%" style="margin-bottom: 10px;"></center>
+      <div class="content has-text-justified" style="margin-bottom: 20px;">
+        <p style="font-size: 0.95em;">
+          <b>(Top) Inference request arrivals:</b> The arrival rate initially increases to a peak level after around 90 seconds, then gradually decreases with some fluctuations, representing a realistic bursty workload pattern.
+        </p>
+      </div>
+
+      <center><img src="./images/case-throughput.png" alt="System Throughput" width="100%"></center>
+      <div class="content has-text-justified">
+        <p style="font-size: 0.95em;">
+          <b>(Bottom) System throughput:</b> FlexLLM automatically detects workload fluctuations and dynamically adjusts the ratio of inference tokens versus finetuning tokens in each iteration's batch. This adaptation significantly increases inference throughput from a few hundred to <b>2.25K tokens/s</b> during peak demand while maintaining finetuning progress throughout the experiment.
+        </p>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<hr>
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@inproceedings{oliaro2026flexllm,
+  author    = {Gabriele Oliaro and Xupeng Miao and Xinhao Cheng and Vineeth Kada and Mengdi Wu and Ruohan Gao and Yingyi Huang and Remi Delacourt and April Yang and Yingcheng Wang and Colin Unger and Zhihao Jia},
+  title     = {FlexLLM: Token-Level Co-Serving of LLM Inference and Finetuning with SLO Guarantees},
+  booktitle = {The 23rd USENIX Symposium on Networked Systems Design and Implementation},
+  year      = {2026},
+  url       = {https://arxiv.org/abs/2402.18789},
+  arxiv     = {2402.18789}
+}</code></pre>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p style="text-align:right;font-size:small;">
+          <a href="https://github.com/nerfies/nerfies.github.io">
+            Webpage template credits
+          </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  <script>
+    // Theme management
+    (function() {
+      const themeToggle = document.getElementById('theme-toggle');
+      const themeIcon = document.getElementById('theme-icon');
+      const body = document.body;
+      
+      // Get saved theme or default to system preference
+      function getInitialTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+          return savedTheme;
+        }
+        
+        // Check system preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 'dark';
+        }
+        return 'light';
+      }
+      
+      // Apply theme
+      function applyTheme(theme) {
+        if (theme === 'dark') {
+          body.setAttribute('data-theme', 'dark');
+          themeIcon.className = 'fas fa-sun';
+          themeToggle.setAttribute('aria-label', 'Switch to light mode');
+        } else {
+          body.setAttribute('data-theme', 'light');
+          themeIcon.className = 'fas fa-moon';
+          themeToggle.setAttribute('aria-label', 'Switch to dark mode');
+        }
+        localStorage.setItem('theme', theme);
+      }
+      
+      // Toggle theme
+      function toggleTheme() {
+        const currentTheme = body.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        applyTheme(newTheme);
+      }
+      
+      // Initialize theme
+      const initialTheme = getInitialTheme();
+      applyTheme(initialTheme);
+      
+      // Add event listener
+      themeToggle.addEventListener('click', toggleTheme);
+      
+      // Listen for system theme changes
+      if (window.matchMedia) {
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+          // Only auto-switch if user hasn't manually set a preference
+          if (!localStorage.getItem('theme')) {
+            applyTheme(e.matches ? 'dark' : 'light');
+          }
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
