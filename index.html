@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
   <!-- Primary Meta Tags -->
-  <title>FlexLLM: Token-Level Co-Serving of LLM Inference and Fine-Tuning with SLO Guarantees | NSDI 2026</title>
-  <meta name="title" content="FlexLLM: Token-Level Co-Serving of LLM Inference and Fine-Tuning with SLO Guarantees | NSDI 2026">
+  <title>FlexLLM: Token-Level Co-Serving of LLM Inference and Finetuning with SLO Guarantees | NSDI 2026</title>
+  <meta name="title" content="FlexLLM: Token-Level Co-Serving of LLM Inference and Finetuning with SLO Guarantees | NSDI 2026">
   <meta name="description" content="FlexLLM is the first system to co-serve LLM inference and PEFT-based finetuning on shared GPUs through token-level computation fusion. Achieves 1.9-4.8× finetuning throughput improvements while maintaining strict latency SLOs.">
   <meta name="keywords" content="FlexLLM, large language model, LLM serving, inference system, finetuning, PEFT, co-serving, token-level scheduling, memory optimization, SLO guarantees, NSDI 2026, machine learning, deep learning, natural language processing, NLP, LLM optimization">
   <meta name="author" content="Gabriele Oliaro, Xupeng Miao, Xinhao Cheng, Vineeth Kada, Mengdi Wu, Ruohan Gao, Yingyi Huang, Remi Delacourt, April Yang, Yingcheng Wang, Colin Unger, Zhihao Jia">
@@ -15,14 +15,14 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://flexllm.github.io/">
-  <meta property="og:title" content="FlexLLM: Token-Level Co-Serving of LLM Inference and Fine-Tuning with SLO Guarantees">
+  <meta property="og:title" content="FlexLLM: Token-Level Co-Serving of LLM Inference and Finetuning with SLO Guarantees">
   <meta property="og:description" content="FlexLLM is the first system to co-serve LLM inference and PEFT-based finetuning on shared GPUs through token-level computation fusion. Achieves 1.9-4.8× finetuning throughput improvements while maintaining strict latency SLOs.">
   <meta property="og:image" content="https://flexllm.github.io/images/flexllm-overview-hq.png">
   
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://flexllm.github.io/">
-  <meta property="twitter:title" content="FlexLLM: Token-Level Co-Serving of LLM Inference and Fine-Tuning with SLO Guarantees">
+  <meta property="twitter:title" content="FlexLLM: Token-Level Co-Serving of LLM Inference and Finetuning with SLO Guarantees">
   <meta property="twitter:description" content="FlexLLM is the first system to co-serve LLM inference and PEFT-based finetuning on shared GPUs through token-level computation fusion. Achieves 1.9-4.8× finetuning throughput improvements while maintaining strict latency SLOs.">
   <meta property="twitter:image" content="https://flexllm.github.io/images/flexllm-overview-hq.png">
   
@@ -30,7 +30,7 @@
   <link rel="canonical" href="https://flexllm.github.io/">
   
   <!-- Additional SEO -->
-  <meta name="citation_title" content="FlexLLM: Token-Level Co-Serving of LLM Inference and Fine-Tuning with SLO Guarantees">
+  <meta name="citation_title" content="FlexLLM: Token-Level Co-Serving of LLM Inference and Finetuning with SLO Guarantees">
   <meta name="citation_author" content="Oliaro, Gabriele">
   <meta name="citation_author" content="Miao, Xupeng">
   <meta name="citation_author" content="Cheng, Xinhao">
@@ -59,8 +59,6 @@
   <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="./static/css/index.css">
-  <link rel="icon" type="image/svg+xml" href="./images/flexllm-logo.svg">
-  <link rel="icon" type="image/png" href="./images/flexllm-logo.png">
   <style>
     :root {
       /* Light mode colors */
@@ -119,60 +117,27 @@
       display: none;
     }
     
-    /* FlexLLM Brand Fonts */
-    .publication-title {
-      font-family: 'Texta', 'Google Sans', sans-serif !important;
-      font-weight: 900 !important;
-      color: var(--accent-color) !important;
-    }
-    
-    .publication-authors {
-      font-family: 'Lato', 'Noto Sans', sans-serif !important;
-      font-weight: 400 !important;
-    }
-    
-    h1, h2, h3, h4, h5, h6 {
-      font-family: 'Texta', 'Google Sans', sans-serif !important;
-      color: var(--accent-color) !important;
-    }
-
-    /* Target Bulma title classes specifically */
-    .title {
-      color: var(--accent-color) !important;
-    }
-
-    .title.is-1, .title.is-2, .title.is-3, .title.is-4, .title.is-5, .title.is-6 {
-      color: var(--accent-color) !important;
-    }
-    
-    body, p, div, span {
-      font-family: 'Lato', 'Noto Sans', sans-serif !important;
-    }
-
     .content {
       color: var(--text-primary);
     }
-    
-    /* FlexLLM Brand Button Styling */
-    .external-link.button {
-      background-color: var(--accent-color) !important;
-      border-color: var(--accent-color) !important;
-      color: white !important;
-      font-family: 'Texta', 'Google Sans', sans-serif !important;
-      font-weight: 900 !important;
-      text-transform: uppercase !important;
-      letter-spacing: 0.5px !important;
-      border-radius: 80px !important;
-      padding: 12px 27px !important;
-      height: 34px !important;
-      transition: all 0.3s ease !important;
+
+    /* Make titles visible in dark mode */
+    [data-theme="dark"] .title,
+    [data-theme="dark"] h1,
+    [data-theme="dark"] h2,
+    [data-theme="dark"] h3,
+    [data-theme="dark"] h4,
+    [data-theme="dark"] h5,
+    [data-theme="dark"] h6 {
+      color: var(--text-primary) !important;
     }
-    
-    .external-link.button:hover {
-      background-color: var(--accent-hover) !important;
-      border-color: var(--accent-hover) !important;
-      transform: translateY(-1px) !important;
-      box-shadow: 0 4px 8px var(--shadow) !important;
+
+    /* Institution logos */
+    .institution-logo {
+      height: 0.9em;
+      vertical-align: middle;
+      margin: 0 2px;
+      display: inline-block;
     }
 
     /* Theme toggle button */
@@ -200,16 +165,6 @@
       background: var(--accent-hover);
       transform: scale(1.1);
     }
-
-    /* Update author link colors */
-    .publication-authors a {
-      color: var(--accent-color) !important;
-    }
-
-    /* Update muted text */
-    .is-size-4 span {
-      color: var(--text-muted) !important;
-    }
   </style>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -229,46 +184,59 @@
     <div class="container is-max-widescreen">
       <div class="columns is-centered">
         <div class="column has-text-centered">
-          <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 10px; gap: 20px;">
-            <img src="./images/flexllm-logo.png" alt="FlexLLM Logo" style="max-height: 120px; width: auto;">
-            <h1 class="title is-2 publication-title" style="margin: 0;">FlexLLM: Token-Level Co-Serving of LLM Inference <br>and Fine-Tuning with SLO Guarantees</h1>
-          </div>
+          <h1 class="title is-2 publication-title" style="margin-bottom: 10px;">FlexLLM: Token-Level Co-Serving of LLM Inference <br>and Finetuning with SLO Guarantees</h1>
           <div class="is-size-4" style="margin-top: 10px; margin-bottom: 20px;">
             <span style="color: #888888; font-weight: 400;">
-              NSDI 2026 📄
+              NSDI 2026 🚀
             </span>
           </div>
           <div class="is-size-5 publication-authors">
             <span class="author-block">
-              <a href="https://www.gabrieleoliaro.com/">Gabriele Oliaro<sup>1</sup></a></span>
+              <a href="https://www.gabrieleoliaro.com/">Gabriele Oliaro<sup>*</sup></a> <img src="./images/cmu.png" alt="CMU" class="institution-logo"></span>
               <span class="author-block", style="padding-left:30px">
-                <a href="https://hsword.github.io/">Xupeng Miao<sup>1,2</sup></a></span>
-                <span class="author-block", style="padding-left:30px">
-                  <a href="https://xinhaoc.github.io/">Xinhao Cheng<sup>1</sup></a></span>
-                  <span class="author-block", style="padding-left:30px">
-                    <a href="https://www.linkedin.com/in/vineeth-kada/">Vineeth Kada<sup>3</sup></a></span>
+                <a href="https://hsword.github.io/">Xupeng Miao<sup>*†</sup></a> <img src="./images/purdue.png" alt="Purdue" class="institution-logo"></span>
           </div>
 
           <div class="is-size-5 publication-authors">
-            <span class="author-block"><a href="https://wmdi.github.io/">Mengdi Wu<sup>1</sup></a></span>
-            <span class="author-block", style="padding-left:30px"><a href="https://www.linkedin.com/in/ruohan-chloe-gao-b0a675286/">Ruohan Gao<sup>1</sup></a></span>
-            <span class="author-block", style="padding-left:30px"><a href="https://www.linkedin.com/in/avyh/">Yingyi Huang<sup>1</sup></a></span>
-            <span class="author-block", style="padding-left:30px"><a href="https://www.linkedin.com/in/remi-delacourt/">Remi Delacourt<sup>4</sup></a></span>
+            <span class="author-block">
+              <a href="https://xinhaoc.github.io/">Xinhao Cheng</a> <img src="./images/cmu.png" alt="CMU" class="institution-logo"></span>
+            <span class="author-block", style="padding-left:30px">
+              <a href="https://www.linkedin.com/in/vineeth-kada/">Vineeth Kada<sup>†</sup></a> <img src="./images/anthropic.png" alt="Anthropic" class="institution-logo"></span>
+            <span class="author-block", style="padding-left:30px">
+              <a href="https://wmdi.github.io/">Mengdi Wu</a> <img src="./images/cmu.png" alt="CMU" class="institution-logo"></span>
+            <span class="author-block", style="padding-left:30px">
+              <a href="https://www.linkedin.com/in/ruohan-chloe-gao-b0a675286/">Ruohan Gao</a> <img src="./images/cmu.png" alt="CMU" class="institution-logo"></span>
+            <span class="author-block", style="padding-left:30px">
+              <a href="https://www.linkedin.com/in/avyh/">Yingyi Huang</a> <img src="./images/cmu.png" alt="CMU" class="institution-logo"></span>
           </div>
 
           <div class="is-size-5 publication-authors">
-            <span class="author-block"><a href="https://www.linkedin.com/in/yutongayang/">April Yang<sup>1</sup></a></span>
-            <span class="author-block", style="padding-left:30px">Yingcheng Wang<sup>2</sup></a></span>
-            <span class="author-block", style="padding-left:30px"><a href="https://www.lockshaw.net/">Colin Unger<sup>5</sup></a></span>
-            <span class="author-block", style="padding-left:30px"><a href="https://cs.cmu.edu/~zhihaoj2/">Zhihao Jia<sup>1</sup></a></span>
+            <span class="author-block">
+              <a href="https://www.linkedin.com/in/remi-delacourt/">Remi Delacourt<sup>†</sup></a> <img src="./images/mistral.png" alt="Mistral" class="institution-logo"></span>
+            <span class="author-block", style="padding-left:30px">
+              <a href="https://www.linkedin.com/in/yutongayang/">April Yang</a> <img src="./images/cmu.png" alt="CMU" class="institution-logo"></span>
+            <span class="author-block", style="padding-left:30px">
+              Yingcheng Wang<sup>†</sup></a> <img src="./images/purdue.png" alt="Purdue" class="institution-logo"></span>
+            <span class="author-block", style="padding-left:30px">
+              <a href="https://www.lockshaw.net/">Colin Unger</a> <img src="./images/stanford.png" alt="Stanford" class="institution-logo"></span>
+            <span class="author-block", style="padding-left:30px">
+              <a href="https://cs.cmu.edu/~zhihaoj2/">Zhihao Jia</a> <img src="./images/cmu.png" alt="CMU" class="institution-logo"> <img src="./images/aws.png" alt="AWS" class="institution-logo"></span>
           </div>
 
+          <div class="is-size-5 publication-authors" style="margin-top: 10px;">
+            <span class="author-block"><img src="./images/cmu.png" alt="CMU" class="institution-logo"> Carnegie Mellon University</span>
+            <span class="author-block", style="padding-left:30px"><img src="./images/purdue.png" alt="Purdue" class="institution-logo"> Purdue University</span>
+            <span class="author-block", style="padding-left:30px"><img src="./images/anthropic.png" alt="Anthropic" class="institution-logo"> Anthropic PBC</span>
+          </div>
           <div class="is-size-5 publication-authors">
-            <span class="author-block"><sup>1</sup>Carnegie Mellon University</span>
-            <span class="author-block", style="padding-left:30px"><sup>2</sup>Purdue University</span>
-            <span class="author-block", style="padding-left:30px"><sup>3</sup>Anthropic</span>
-            <span class="author-block", style="padding-left:30px"><sup>4</sup>Mistral AI</span>
-            <span class="author-block", style="padding-left:30px"><sup>5</sup>Stanford University</span>
+            <span class="author-block"><img src="./images/stanford.png" alt="Stanford" class="institution-logo"> Stanford University</span>
+            <span class="author-block", style="padding-left:30px"><img src="./images/mistral.png" alt="Mistral" class="institution-logo"> Mistral AI</span>
+            <span class="author-block", style="padding-left:30px"><img src="./images/aws.png" alt="AWS" class="institution-logo"> Amazon Web Services</span>
+          </div>
+
+          <div class="is-size-5 publication-authors" style="margin-top: 15px; font-style: italic;">
+            <span class="author-block"><sup>*</sup>Equal contribution</span>
+            <span class="author-block", style="padding-left:30px"><sup>†</sup>Work done at CMU</span>
           </div>
 
           <div class="column has-text-centered">
@@ -369,7 +337,7 @@
 
       <div class="content has-text-justified">
         <p>
-          <b>Dependent parallelization</b> enables efficient distributed execution of PEFT models by creating parallel computation graphs that specify execution over distributed environments. The system uses four possible parallel states for tensor dimensions: sequential, data-parallel, tensor-parallel, and pipeline-parallel.
+          <b>Dependent parallelization</b> enables efficient distributed execution of PEFT models by creating parallel computation graphs that specify execution over distributed environments. The system uses four possible parallel states for tensor dimensions: non-parallel, partitioned, replicated, and pre-reduce.
         </p>
         <p>
           <b>Graph pruning</b> optimizes memory usage by removing unnecessary tensors and operations from the computation graph. This optimization, combined with rematerialization and token-level finetuning, achieves up to 80% reduction in activation memory requirements compared to existing approaches.
@@ -429,6 +397,28 @@
   <div class="columns is-centered has-text-centered">
     <div class="column is-four-fifths">
       <br>
+      <h2 class="title is-5">GPU Scheduling Comparison</h2>
+
+      <center><img src="./images/gpu-scheduling-comparison.png" alt="GPU Scheduling Comparison" width="100%"></center>
+
+      <div class="content has-text-justified">
+        <p>
+          <b>Comparison of co-serving with alternative GPU scheduling strategies:</b> temporal sharing and spatial sharing. Temporal sharing interleaves inference and finetuning tasks over time, while spatial sharing simultaneously launches both using separate CUDA resources.
+        </p>
+        <p>
+          For temporal sharing, interleaving one inference iteration with one finetuning iteration violates SLOs for nearly all requests, as inference iterations complete in tens of milliseconds while finetuning takes several seconds. While low inference frequency (64) maximizes finetuning throughput, it adversely impacts SLO attainment. A frequency of 128 matches co-serving's inference metrics but reduces finetuning throughput by 0.57×-0.86× compared to co-serving.
+        </p>
+        <p>
+          Dynamic temporal sharing adapts based on queue lengths and arrival rates, maintaining SLO attainment above 90% in most scenarios with inference throughputs of 5.4K, 4.9K, and 6.6K tokens/s under heavy loads. However, co-serving's finetuning throughput is still <b>1.0–1.7×</b> higher, and dynamic temporal sharing shows instability under the heaviest loads. Spatial sharing achieves comparable finetuning throughput but remains suboptimal in SLO attainment under heavy inference workloads due to interference between tasks.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="columns is-centered has-text-centered">
+    <div class="column is-four-fifths">
+      <br>
       <h2 class="title is-5">Memory Optimization Effectiveness</h2>
 
       <center><img src="./images/memory-optimization.png" alt="Memory Optimization" width="100%"></center>
@@ -450,14 +440,23 @@
       <br>
       <h2 class="title is-5">Dynamic Workload Adaptation</h2>
 
-      <center><img src="./images/dynamic-adaptation.png" alt="Dynamic Adaptation" width="100%"></center>
-
       <div class="content has-text-justified">
         <p>
-          <b>Case study</b> demonstrating FlexLLM's ability to dynamically adapt to fluctuating inference workloads in real-time using a 10-minute interval of the BurstGPT trace with Qwen-2.5-14B model.
+          <b>Case study</b> demonstrating FlexLLM's ability to dynamically adapt to fluctuating inference workloads in real-time using a 10-minute interval of the BurstGPT trace with Qwen-2.5-14B model. Inference and finetuning requests are sampled from the ShareGPT and Sky-T1 datasets respectively.
         </p>
-        <p>
-          FlexLLM automatically detects workload fluctuations and improves the ratio of inference tokens (vs fine-tuning tokens) in each iteration's batch. This significantly increases inference throughput from a few hundreds to <b>2.25K tokens/s</b> during peak demand while maintaining finetuning progress.
+      </div>
+
+      <center><img src="./images/case-arrival.png" alt="Arrival Inference Requests" width="100%" style="margin-bottom: 10px;"></center>
+      <div class="content has-text-justified" style="margin-bottom: 20px;">
+        <p style="font-size: 0.95em;">
+          <b>(Top) Inference request arrivals:</b> The arrival rate initially increases to a peak level after around 90 seconds, then gradually decreases with some fluctuations, representing a realistic bursty workload pattern.
+        </p>
+      </div>
+
+      <center><img src="./images/case-throughput.png" alt="System Throughput" width="100%"></center>
+      <div class="content has-text-justified">
+        <p style="font-size: 0.95em;">
+          <b>(Bottom) System throughput:</b> FlexLLM automatically detects workload fluctuations and dynamically adjusts the ratio of inference tokens versus finetuning tokens in each iteration's batch. This adaptation significantly increases inference throughput from a few hundred to <b>2.25K tokens/s</b> during peak demand while maintaining finetuning progress throughout the experiment.
         </p>
       </div>
     </div>
@@ -467,16 +466,12 @@
 
 <hr>
 
-
-<hr>
-
-
 <section class="section" id="BibTeX">
   <div class="container is-max-desktop content">
     <h2 class="title">BibTeX</h2>
     <pre><code>@inproceedings{oliaro2026flexllm,
   author    = {Gabriele Oliaro and Xupeng Miao and Xinhao Cheng and Vineeth Kada and Mengdi Wu and Ruohan Gao and Yingyi Huang and Remi Delacourt and April Yang and Yingcheng Wang and Colin Unger and Zhihao Jia},
-  title     = {FlexLLM: Token-Level Co-Serving of LLM Inference and Fine-Tuning with SLO Guarantees},
+  title     = {FlexLLM: Token-Level Co-Serving of LLM Inference and Finetuning with SLO Guarantees},
   booktitle = {The 23rd USENIX Symposium on Networked Systems Design and Implementation},
   year      = {2026},
   url       = {https://arxiv.org/abs/2402.18789},
